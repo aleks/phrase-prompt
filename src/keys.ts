@@ -9,6 +9,7 @@ import {
   Select,
   Toggle,
 } from "https://deno.land/x/cliffy/prompt/mod.ts";
+import { Table } from "https://deno.land/x/cliffy/table/mod.ts";
 import * as log from "https://deno.land/std@0.91.0/log/mod.ts";
 
 const askForKeyDetails = async () => {
@@ -109,4 +110,33 @@ export const createKey = async (): Promise<void> => {
     ) as Key;
     if (key.id) log.info("Key created!");
   }
+};
+
+export const searchKey = async (): Promise<Key[]> => {
+  const keyQuery = {};
+  const projectId = await selectProject();
+  const branchName = await selectBranch(projectId);
+  if (branchName !== "main") Object.assign(keyQuery, { branch: branchName });
+
+  const keyName = await Input.prompt({ message: "Search key name:" })
+
+  Object.assign(keyQuery, { q: keyName });
+
+  const keys = await createResource(
+    `/v2/projects/${projectId}/keys/search`,
+    keyQuery,
+  ) as Key[];
+
+  const mappedKeys = keys.map(key => {
+    return [key.id, key.name, key.description];
+  })
+
+  new Table()
+    .header(["id", "name", "description"])
+    .body(mappedKeys)
+    .padding(1)
+    .border(true)
+    .render();
+
+  return keys;
 };

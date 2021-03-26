@@ -8,9 +8,7 @@ const handleResponseErrors = (response: Response): void => {
     Deno.exit();
   }
 
-  if (response["status"] !== (200 || 201)) {
-    log.error(response["statusText"]);
-  }
+  if (response["status"] >= 400) log.error(response["statusText"]);
 };
 
 export const getResources = async (
@@ -36,7 +34,7 @@ export const getResources = async (
 export const createResource = async (
   url: string,
   data: Record<string, unknown>,
-): Promise<Record<string, unknown>> => {
+): Promise<Record<string, unknown> | Record<string, unknown>[]> => {
   const resourceURL = new URL(url, apiEndpoint());
   const authToken = await getAuthToken();
 
@@ -49,6 +47,7 @@ export const createResource = async (
     body: JSON.stringify(data),
   }).then((response) => {
     handleResponseErrors(response);
+
     return response.json();
   }).catch((error) => {
     log.error(error);

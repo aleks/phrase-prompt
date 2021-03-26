@@ -1,4 +1,4 @@
-import { createKey } from "./src/keys.ts";
+import { createKey, searchKey } from "./src/keys.ts";
 import { createBranch } from "./src/branches.ts";
 import { Select } from "https://deno.land/x/cliffy/prompt/mod.ts";
 
@@ -7,6 +7,7 @@ const runPrompt = async () => {
     message: "What do you want to do?",
     options: [
       { name: "Create Key", value: "createKey" },
+      { name: "Search Key", value: "searchKey" },
       { name: "Create Branch", value: "createBranch" },
     ],
   });
@@ -14,6 +15,10 @@ const runPrompt = async () => {
   switch (selectAction) {
     case "createKey":
       await createKey();
+      await runPrompt();
+      break;
+    case "searchKey":
+      await searchKey();
       await runPrompt();
       break;
     case "createBranch":
