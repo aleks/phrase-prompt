@@ -40,7 +40,7 @@ deno install --unstable --allow-net --allow-read -n phrase-prompt https://raw.gi
 
 What do these flags mean?
 - `--unstable` is required since `phrase-prompt` uses some unstable features from Deno.
-- `--allow-net` is required to request data from the [phrase](https://phrase.com) API.
+- `--allow-net` is required to request data from the [phrase API](https://developers.phrase.com/api/).
 - `--allow-read` is required to be able to read your Phrase config (`.phrase.yml` or `.phraseapp.yml`)
 - `-n` defines the name of the executable. Feel free to change it to your liking.
 
