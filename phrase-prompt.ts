@@ -6,8 +6,8 @@ const runPrompt = async () => {
   const selectAction = await Select.prompt({
     message: "What do you want to do?",
     options: [
-      { name: "Create Key", value: "createKey" },
       { name: "Search Key", value: "searchKey" },
+      { name: "Create Key", value: "createKey" },
       { name: "Create Branch", value: "createBranch" },
     ],
   });
