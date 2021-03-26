@@ -34,6 +34,7 @@ If you want to be independent from a specific path, you can also provide `phrase
 
 ## Install
 
+### From GitHub
 ```
 deno install --unstable --allow-net --allow-read -n phrase-prompt https://raw.githubusercontent.com/aleks/phrase-prompt/main/phrase-prompt.ts
 ```
@@ -45,6 +46,14 @@ What do these flags mean?
 - `-n` defines the name of the executable. Feel free to change it to your liking.
 
 Note: Once you've run the install command, Deno will notify you to update your `$PATH` to be able to access Deno-installed tools from everywhere in your terminal.
+
+### From Source
+```
+git clone git@github.com:aleks/phrase-prompt.git
+cd phrase-prompt
+deno compile --unstable --allow-read --allow-net phrase-prompt.ts
+```
+Afterwards you will find a `phrase-prompt` executable in the same folder. Feel free to move it somewhere in your `$PATH`.
 
 ## Usage
 
