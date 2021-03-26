@@ -24,3 +24,14 @@ export type Branch = {
   state: string;
   created_by: User;
 };
+
+export type Key = {
+  id: string;
+  name: string;
+  description: string;
+  name_hash: string;
+  plural: boolean;
+  tags: string[];
+  created_at: Date;
+  updated_at: Date;
+}

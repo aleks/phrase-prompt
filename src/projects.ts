@@ -31,11 +31,11 @@ export const selectBranch = async (projectId: string): Promise<string> => {
     .map((branch) => {
       return {
         name: `${branch.name} (created by: ${branch.created_by.name})`,
-        value: branch.branch_project_id,
+        value: branch.name,
       };
     });
 
-  mappedBranches.unshift({ name: "Main", value: projectId });
+  mappedBranches.unshift({ name: "Main", value: 'main' });
 
   const branchId = await Select.prompt({
     message: "Please select a branch:",
