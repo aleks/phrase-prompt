@@ -58,15 +58,14 @@ export const getPhraseConfig = async (): Promise<PhraseConfig> => {
 const flags = (): Record<string, unknown> => {
   const args = parseFlags(Deno.args);
   return args.flags;
-}
+};
 
 export const getAuthToken = async (): Promise<string> => {
-
   if (flags().token) {
     return flags().token as string;
   } else {
     const phraseConfig = await getPhraseConfig();
-    return phraseConfig.config.access_token || ""
+    return phraseConfig.config.access_token || "";
   }
 };
 
