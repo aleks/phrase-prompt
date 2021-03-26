@@ -3,6 +3,8 @@ Interactive [Phrase.com](https://phrase.com) CLI - build with Deno
 
 > The Leanest, Fastest, and Most Reliable Localization Platform
 
+`phrase-prompt` is an alternative frontend to the [phrase](https://help.phrase.com/help/configuration) command-line client.
+
 ## Search Translation Keys
 ![search keys](https://raw.githubusercontent.com/aleks/phrase-prompt/main/readme/search.png)
 
@@ -16,10 +18,21 @@ Interactive [Phrase.com](https://phrase.com) CLI - build with Deno
 
 To use `phrase-prompt` you need to install [deno](https://deno.land/) first:
 
+### Deno
+
 ```
 brew install deno
 ```
 Not on macOS? [Deno install guide](https://deno.land/#installation)
+
+### Phrase Client
+
+`phrase-prompt` will read the phrase config from your current path (while in a phrase-enabled project). The config file (`.phrase.yml` or `.phraseapp.yml`) usually lives in your project root. If you have a phrase config in your current path, you will not have to do anything.
+
+If you want to be independent from a specific path, you can also provide `phrase-prompt` an access token via a flag:
+- `--token <access token>` - [Don't have an access token?](https://help.phrase.com/help/access-tokens)
+
+You also need to have a Phrase config file (`.phrase.yml` or `.phraseapp.yml`) in your current path.
 
 ## Install
 
