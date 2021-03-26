@@ -32,8 +32,6 @@ Not on macOS? [Deno install guide](https://deno.land/#installation)
 If you want to be independent from a specific path, you can also provide `phrase-prompt` an access token via a flag:
 - `--token <access token>` - [Don't have an access token?](https://help.phrase.com/help/access-tokens)
 
-You also need to have a Phrase config file (`.phrase.yml` or `.phraseapp.yml`) in your current path.
-
 ## Install
 
 ```
