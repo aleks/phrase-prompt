@@ -1,4 +1,5 @@
 import { getAuthTokenFromConfig } from "./config.ts";
+import * as log from "https://deno.land/std@0.91.0/log/mod.ts";
 
 export const endpointUrl = (): string => {
   return "https://api.phrase.com/v2";
@@ -29,13 +30,21 @@ export const createResource = async (
   const formData = new FormData();
   Object.entries(data).forEach((item) => formData.append(item[0], `${item[1]}`));
 
-  const response = await fetch(resourceURL.href, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${authToken}`,
-    },
-    body: formData,
-  });
-
-  return await response.json();
+  try {
+    return await fetch(resourceURL.href, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${authToken}`,
+      },
+      body: formData,
+    }).then(response => {
+      if (response["status"] !== 201) log.error(response["statusText"]);
+      return response.json();
+    }).catch(error => {
+      log.error(error);
+    });
+  } catch (error) {
+    log.error(error);
+    return {}
+  }
 };

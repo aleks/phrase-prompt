@@ -1,10 +1,26 @@
-import { selectBranch, selectProject } from "./src/projects.ts";
 import { createKey } from "./src/keys.ts";
+import { createBranch } from "./src/branches.ts";
+import { Select } from "https://deno.land/x/cliffy/prompt/mod.ts";
 
-const projectId = await selectProject();
-const branchName = await selectBranch(projectId);
-const keyDetails = await createKey(projectId, branchName);
+const runPrompt = async () => {
+  const selectAction = await Select.prompt({
+    message: "What do you want to do?",
+    options: [
+      { name: "Create Key", value: 'createKey' },
+      { name: "Create Branch", value: 'createBranch' }
+    ]
+  })
 
-console.log(projectId);
-console.log(branchName);
-console.log(keyDetails);
+  switch (selectAction) {
+    case 'createKey':
+        await createKey();
+        await runPrompt();
+      break;
+    case 'createBranch':
+        await createBranch();
+        await runPrompt();
+      break;
+  }
+}
+
+runPrompt();

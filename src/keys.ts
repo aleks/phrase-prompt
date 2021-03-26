@@ -1,5 +1,7 @@
 import { Key } from './types.ts';
 import { createResource } from './api.ts';
+import { selectProject } from "./projects.ts";
+import { selectBranch } from "./branches.ts";
 import { prompt, Input, Toggle, Number, Select } from "https://deno.land/x/cliffy/prompt/mod.ts";
 import * as log from "https://deno.land/std@0.91.0/log/mod.ts";
 
@@ -76,12 +78,14 @@ const askForKeyDetails = async () => {
   ]);
 }
 
-export const createKey = async (projectId: string, branchName: string): Promise<void> => {
-  let key: Key;
+export const createKey = async (): Promise<void> => {
+  const projectId = await selectProject();
+  const branchName = await selectBranch(projectId);
   const keyDetails = await askForKeyDetails();
 
   if (branchName !== "main") Object.assign(keyDetails, { branch: branchName });
 
+  let key: Key;
   if(keyDetails.create_key) {
     key = await createResource(`/v2/projects/${projectId}/keys`, keyDetails) as Key;
     if (key.id) { log.info('Key created!') }
