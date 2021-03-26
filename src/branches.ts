@@ -50,8 +50,11 @@ export const createBranch = async (): Promise<void> => {
   const branchDetails = await askForBranchDetails();
 
   let branch: Branch;
+
   if(branchDetails.create_branch) {
+    delete branchDetails.create_branch;
+
     branch = await createResource(`/v2/projects/${projectId}/branches`, branchDetails) as Branch;
-    if (branch.branch_project_id) { log.info('Branch created!') }
+    if (branch.state === "initialized") { log.info('Branch initialized!') }
   }
 }
