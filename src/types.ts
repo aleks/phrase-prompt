@@ -25,6 +25,12 @@ export type Branch = {
   created_by: User;
 };
 
+export type Locale = {
+  id: string;
+  name: string;
+  code: string;
+}
+
 export type Key = {
   id: string;
   name: string;
@@ -35,3 +41,16 @@ export type Key = {
   created_at: Date;
   updated_at: Date;
 };
+
+export type Translation = {
+  id: string;
+  content: string;
+  unverified: boolean;
+  excluded: boolean;
+  key: Key;
+  locale: Locale;
+  placeholders: string[];
+  state: string;
+  created_at: Date;
+  updated_at: Date;
+}

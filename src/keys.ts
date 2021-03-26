@@ -1,5 +1,5 @@
-import { Key } from "./types.ts";
-import { createResource } from "./api.ts";
+import { Key, Translation } from "./types.ts";
+import { getResources, createResource } from "./api.ts";
 import { selectProject } from "./projects.ts";
 import { selectBranch } from "./branches.ts";
 import {
@@ -9,7 +9,7 @@ import {
   Select,
   Toggle,
 } from "https://deno.land/x/cliffy/prompt/mod.ts";
-import { Table } from "https://deno.land/x/cliffy/table/mod.ts";
+import { Cell, Table } from "https://deno.land/x/cliffy/table/mod.ts";
 import * as log from "https://deno.land/std@0.91.0/log/mod.ts";
 
 const askForKeyDetails = async () => {
@@ -112,6 +112,19 @@ export const createKey = async (): Promise<void> => {
   }
 };
 
+const getTranslationsForKey = async (
+  projectId: string,
+  branchName: string,
+  keyId: string,
+): Promise<Translation[]> => {
+  const params = new URLSearchParams("?per_page=100&sort=updated_at");
+  if (branchName !== "main") params.append("branch", branchName);
+
+  return await getResources(
+    `/v2/projects/${projectId}/keys/${keyId}/translations?${params.toString()}`
+  ) as Translation[];
+}
+
 export const searchKey = async (): Promise<Key[]> => {
   const keyQuery = {};
   const projectId = await selectProject();
@@ -127,16 +140,37 @@ export const searchKey = async (): Promise<Key[]> => {
     keyQuery,
   ) as Key[];
 
-  const mappedKeys = keys.map(key => {
-    return [key.id, key.name, key.description];
-  })
+  if(keys.length < 1) {
+    log.info(`Key with name \"${keyName}\" not found`);
+    Deno.exit();
+  }
 
-  new Table()
-    .header(["id", "name", "description"])
-    .body(mappedKeys)
-    .padding(1)
-    .border(true)
-    .render();
+  const keyId = await Select.prompt({
+    message: "Please select a key:",
+    options: keys.map(key => ({ name: key.name, value: key.id })),
+  });
+
+  const translations = await getTranslationsForKey(projectId, branchName, keyId);
+
+  if(translations.length > 0) {
+    const mappedTranslations = translations.map(translation => {
+      return [
+        translation.id,
+        translation.locale.name,
+        `state: ${translation.state}`,
+        `unverified: ${translation.unverified}`,
+        translation.content,
+      ]
+    });
+
+    Table
+      .from(mappedTranslations)
+      .border(true)
+      .render();
+
+  } else {
+    log.info(`No translations found for key ${keyId}`);
+  }
 
   return keys;
 };
