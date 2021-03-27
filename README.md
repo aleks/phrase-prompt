@@ -1,5 +1,5 @@
 # phrase-prompt 🦕
-Interactive [Phrase.com](https://phrase.com) CLI - build with Deno
+Interactive [Phrase.com](https://phrase.com) CLI - built with Deno
 
 > The Leanest, Fastest, and Most Reliable Localization Platform
 
